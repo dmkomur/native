@@ -1,15 +1,20 @@
-import { transform } from "@svgr/core";
-
-const svgCode = `
-<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="12.5" cy="12.5" r="12" fill="white" stroke="#FF6C00"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M13 6H12V12H6V13H12V19H13V13H19V12H13V6Z" fill="#FF6C00"/>
-</svg>
-
-`;
-
-const jsCode = await transform(
-  svgCode,
-  { icon: true },
-  { componentName: "MyComponent" }
+import * as React from "react";
+import Svg, { Circle, Path } from "react-native-svg";
+const SvgAdd = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={25}
+    height={25}
+    fill="none"
+    {...props}
+  >
+    <Circle cx={12.5} cy={12.5} r={12} fill="#fff" stroke="#FF6C00" />
+    <Path
+      fill="#FF6C00"
+      fillRule="evenodd"
+      d="M13 6h-1v6H6v1h6v6h1v-6h6v-1h-6V6Z"
+      clipRule="evenodd"
+    />
+  </Svg>
 );
+export default SvgAdd;

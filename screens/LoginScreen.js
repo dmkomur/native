@@ -22,6 +22,11 @@ export default function LoginScreen() {
   const [input2Focused, setInput2Focused] = useState(false);
   const [input3Focused, setInput3Focused] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleForm = () => {
+    console.log({ email, password });
+  };
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
     setHidePassword(!hidePassword);
@@ -81,6 +86,8 @@ export default function LoginScreen() {
                 style={[styles.input, input2Focused && styles.inputFocused]}
                 placeholder="Адреса електронної пошти"
                 placeholderTextColor={"#BDBDBD"}
+                value={email}
+                onChangeText={setEmail}
               />
               <TextInput
                 onFocus={() => setInput3Focused(true)}
@@ -89,6 +96,8 @@ export default function LoginScreen() {
                 placeholder="Пароль"
                 placeholderTextColor={"#BDBDBD"}
                 secureTextEntry={hidePassword}
+                value={password}
+                onChangeText={setPassword}
               />
               <TouchableOpacity onPress={togglePasswordVisibility}>
                 <Text style={styles.inputPasswordShower}>
@@ -96,7 +105,7 @@ export default function LoginScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity onPress={handleForm} style={styles.button}>
               <Text style={styles.buttonText}>Увійти</Text>
             </TouchableOpacity>
             <Text style={styles.linkText}>

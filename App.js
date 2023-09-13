@@ -17,12 +17,9 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 
-import SvgAdd from "./components/SvgPlus";
-
 export default function App() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
-  const [input1Focused, setInput1Focused] = useState(false);
   const [input2Focused, setInput2Focused] = useState(false);
   const [input3Focused, setInput3Focused] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
@@ -77,18 +74,8 @@ export default function App() {
           <Animated.View
             style={[styles.formWrapper, { paddingBottom: position }]}
           >
-            <View style={styles.avavtarThumb}>
-              <SvgAdd style={styles.plusSvg} />
-            </View>
-            <Text style={styles.title}>Реєстрація</Text>
+            <Text style={styles.title}>Увійти</Text>
             <View style={styles.inputsContainer}>
-              <TextInput
-                onFocus={() => setInput1Focused(true)}
-                onBlur={() => setInput1Focused(false)}
-                style={[styles.input, input1Focused && styles.inputFocused]}
-                placeholder="Логін"
-                placeholderTextColor={"#BDBDBD"}
-              />
               <TextInput
                 onFocus={() => setInput2Focused(true)}
                 onBlur={() => setInput2Focused(false)}
@@ -111,9 +98,12 @@ export default function App() {
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Зареєструватися</Text>
+              <Text style={styles.buttonText}>Увійти</Text>
             </TouchableOpacity>
-            <Text style={styles.linkText}>Вже є акаунт? Увійти</Text>
+            <Text style={styles.linkText}>
+              Немає акаунту?{" "}
+              <Text style={styles.linkTextLine}>Зареєструватися</Text>
+            </Text>
           </Animated.View>
         </ScrollView>
       </View>
@@ -130,14 +120,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: screenSize.height,
     width: screenSize.width,
-  },
-  avavtarThumb: {
-    width: 120,
-    height: 120,
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-    position: "absolute",
-    top: -60,
   },
   title: {
     fontFamily: "Roboro-Medium",
@@ -158,13 +140,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "Roboro-Regular",
   },
-  plusSvg: {
-    width: 25,
-    height: 25,
-    position: "absolute",
-    top: 81,
-    left: 107,
-  },
   inputFocused: {
     borderColor: "#FF6C00",
   },
@@ -182,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   formWrapper: {
-    paddingTop: 92,
+    paddingTop: 32,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     borderTopLeftRadius: 30,
@@ -208,4 +183,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1B4371",
   },
+  linkTextLine: { textDecorationLine: "underline" },
 });

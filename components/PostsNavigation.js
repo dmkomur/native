@@ -16,6 +16,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import SvgLogout from "./SvgLogout";
 import SvgArrow from "./SvgArrow";
+import SvgAdd from "./SvgAdd";
+import SvgGrid from "./SvgGrid";
+import SvgUser from "./SvgUser";
 
 const Tabs = createBottomTabNavigator();
 
@@ -25,21 +28,37 @@ export default function PostNavigation() {
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
+        tabBarStyle: {
+          alignItems: "center",
+        },
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconComponent;
 
           if (route.name === "Posts") {
-            iconName = focused ? "apps" : "apps";
+            iconComponent = <SvgGrid />;
           } else if (route.name === "Create") {
-            iconName = focused ? "plus" : "plus";
+            iconComponent = (
+              <View
+                style={{
+                  padding: 16,
+                  backgroundColor: "#FF6C00",
+                  height: 40,
+                  width: 70,
+                  borderRadius: 20,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <SvgAdd />
+              </View>
+            );
           } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person";
+            iconComponent = <SvgUser />;
           }
-          return <Octicons name={iconName} size={size} color={color} />;
+
+          return iconComponent;
         },
         tabBarLabel: () => null,
-        tabBarActiveTintColor: "#FF6C00",
-        tabBarInactiveTintColor: "#212121",
       })}
     >
       <Tabs.Screen

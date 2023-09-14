@@ -16,7 +16,7 @@ import {
   Animated,
 } from "react-native";
 
-import SvgAdd from "../components/SvgPlus";
+import SvgPlus from "../components/SvgPlus";
 import { useNavigation } from "@react-navigation/native";
 
 export default function RegistrationScreen() {
@@ -79,7 +79,7 @@ export default function RegistrationScreen() {
             style={[styles.formWrapper, { paddingBottom: position }]}
           >
             <View style={styles.avavtarThumb}>
-              <SvgAdd style={styles.plusSvg} />
+              <SvgPlus style={styles.plusSvg} />
             </View>
             <Text style={styles.title}>Реєстрація</Text>
             <View style={styles.inputsContainer}>

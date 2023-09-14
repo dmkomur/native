@@ -16,19 +16,23 @@ import {
   Animated,
 } from "react-native";
 
-import SvgAdd from "./components/SvgPlus";
+import SvgAdd from "../components/SvgPlus";
+import { useNavigation } from "@react-navigation/native";
 
 export default function RegistrationScreen() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
+  const [hidePassword, setHidePassword] = useState(true);
   const [input1Focused, setInput1Focused] = useState(false);
   const [input2Focused, setInput2Focused] = useState(false);
   const [input3Focused, setInput3Focused] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
   const handleForm = () => {
     console.log({ login, email, password });
+    navigation.navigate("Home");
   };
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
@@ -63,7 +67,7 @@ export default function RegistrationScreen() {
       <View style={styles.container}>
         <StatusBar style="auto" />
         <Image
-          source={require("./assets/rockbg.jpg")}
+          source={require("../assets/rockbg.jpg")}
           style={styles.bg}
           resizeMode="cover"
         />
@@ -116,7 +120,12 @@ export default function RegistrationScreen() {
             <TouchableOpacity onPress={handleForm} style={styles.button}>
               <Text style={styles.buttonText}>Зареєструватися</Text>
             </TouchableOpacity>
-            <Text style={styles.linkText}>Вже є акаунт? Увійти</Text>
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Вже є акаунт? Увійти
+            </Text>
           </Animated.View>
         </ScrollView>
       </View>

@@ -14,8 +14,7 @@ import {
   Platform,
   Animated,
 } from "react-native";
-import { useFonts } from "expo-font";
-
+import { useNavigation } from "@react-navigation/native";
 export default function LoginScreen() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
@@ -24,8 +23,10 @@ export default function LoginScreen() {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
   const handleForm = () => {
     console.log({ email, password });
+    navigation.navigate("Home");
   };
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
@@ -51,14 +52,7 @@ export default function LoginScreen() {
       useNativeDriver: false,
     }).start();
   }, [shift]);
-  const [fontsLoaded] = useFonts({
-    "Roboro-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
-    "Roboro-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
-    "Roboro-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -67,7 +61,7 @@ export default function LoginScreen() {
       <View style={styles.container}>
         <StatusBar style="auto" />
         <Image
-          source={require("./assets/rockbg.jpg")}
+          source={require("../assets/rockbg.jpg")}
           style={styles.bg}
           resizeMode="cover"
         />
@@ -108,7 +102,10 @@ export default function LoginScreen() {
             <TouchableOpacity onPress={handleForm} style={styles.button}>
               <Text style={styles.buttonText}>Увійти</Text>
             </TouchableOpacity>
-            <Text style={styles.linkText}>
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate("Registration")}
+            >
               Немає акаунту?{" "}
               <Text style={styles.linkTextLine}>Зареєструватися</Text>
             </Text>

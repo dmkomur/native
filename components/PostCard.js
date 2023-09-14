@@ -38,7 +38,7 @@ export default function PostCard() {
 const styles = StyleSheet.create({
   container: {
     height: "auto",
-    width: "343",
+    width: 343,
     gap: 8,
   },
   photoThumb: {

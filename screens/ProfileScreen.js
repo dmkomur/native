@@ -6,6 +6,8 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
+import SvgLogout from "../components/SvgLogout";
+import PostCard from "../components/PostCard";
 
 export default function ProfileScreen() {
   return (
@@ -15,7 +17,14 @@ export default function ProfileScreen() {
         style={styles.bg}
         resizeMode="cover"
       />
-      <Text>ProfileScreen</Text>
+      <View style={styles.postsContainer}>
+        <View style={styles.photoThumb}></View>
+        <SvgLogout style={styles.svgLogout} />
+        <Text style={styles.title}>ProfileScreen</Text>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </View>
     </View>
   );
 }
@@ -35,62 +44,25 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#212121",
     marginBottom: 33,
+    marginTop: 46,
   },
-  inputsContainer: { gap: 16, width: "100%", alignItems: "center" },
-  input: {
-    padding: 15,
-    backgroundColor: "#F6F6F6",
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#E8E8E8",
-    width: 343,
-    height: 50,
-
-    fontSize: 16,
-    fontFamily: "Roboro-Regular",
+  postsContainer: {
+    flex: 1,
+    marginTop: 102,
+    alignItems: "center",
+    paddingTop: 22,
+    paddingHorizontal: 16,
+    backgroundColor: "#fff",
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
   },
-  inputFocused: {
-    borderColor: "#FF6C00",
-  },
-  inputPasswordShower: {
-    fontSize: 16,
-    textAlign: "right",
-    fontFamily: "Roboro-Regular",
-    color: "#1B4371",
+  photoThumb: {
     position: "absolute",
-    bottom: 30,
-    left: 70,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    width: 120,
+    height: 120,
+    top: -60,
   },
-  scrollViewContainer: {
-    minHeight: screenSize.height,
-    justifyContent: "flex-end",
-  },
-  formWrapper: {
-    paddingTop: 32,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-  },
-  button: {
-    width: 343,
-    height: 51,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FF6C00",
-    borderRadius: 100,
-    marginTop: 43,
-    marginBottom: 16,
-  },
-  buttonText: {
-    fontFamily: "Roboro-Regular",
-    fontSize: 16,
-    color: "#fff",
-  },
-  linkText: {
-    fontFamily: "Roboro-Regular",
-    fontSize: 16,
-    color: "#1B4371",
-  },
-  linkTextLine: { textDecorationLine: "underline" },
+  svgLogout: { alignSelf: "flex-end" },
 });

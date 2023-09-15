@@ -121,3 +121,31 @@ export default function PostNavigation() {
     </Tabs.Navigator>
   );
 }
+
+{
+  /* <Tabs.Screen
+  name="Create"
+  component={CreatePostScreen}
+  options={({ route }) => ({
+    headerLeft: () => (
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <SvgArrow style={{ marginLeft: 16 }} />
+      </TouchableOpacity>
+    ),
+    headerTitle: () => (
+      <Text
+        style={{
+          fontSize: 22,
+          fontFamily: "Roboro-Medium",
+          color: "#212121",
+          textAlign: "center",
+        }}
+      >
+        Створити публікацію
+      </Text>
+    ),
+    headerTitleAlign: "center",
+    tabBarVisible: route.state && route.state.index === 0 ? true : false, // Устанавливаем tabBarVisible в false на этом экране
+  })}
+/>; */
+}

@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import ProfileScreen from "./ProfileScreen";
-import CreatePostScreen from "./CreatePostScreen";
-import PostsScreen from "./PostsScreen";
+
 import PostNavigation from "../components/PostsNavigation";
+import CommentsScreen from "./CommentsScreen";
+import MapScreen from "./MapScreen";
+import SvgArrow from "../components/SvgArrow";
 
 const HomeStack = createStackNavigator();
 
@@ -17,6 +18,50 @@ export default function Home() {
         options={{
           headerShown: false,
         }}
+      />
+      <HomeStack.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={({ navigation }) => ({
+          headerTitle: "Коментарі",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Roboro-Medium",
+            color: "#212121",
+            textAlign: "center",
+            fontSize: 17,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 16 }}
+            >
+              <SvgArrow />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <HomeStack.Screen
+        name="Map"
+        component={MapScreen}
+        options={({ navigation }) => ({
+          headerTitle: "Геолокація",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Roboro-Medium",
+            color: "#212121",
+            textAlign: "center",
+            fontSize: 17,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 16 }}
+            >
+              <SvgArrow />
+            </TouchableOpacity>
+          ),
+        })}
       />
     </HomeStack.Navigator>
   );

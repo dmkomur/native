@@ -64,7 +64,7 @@ export default function CreatePostScreen() {
   };
   const handleForm = () => {
     console.log({ name, location, photo, locationName });
-    navigation.navigate("Registration");
+    navigation.navigate("Map");
   };
   return (
     <KeyboardAvoidingView

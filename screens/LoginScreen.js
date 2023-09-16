@@ -15,6 +15,14 @@ import {
   Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../config";
+
 export default function LoginScreen() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
@@ -24,15 +32,27 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+
   const handleForm = () => {
-    console.log({ email, password });
-    navigation.navigate("Home");
+    loginDB({ email, password });
   };
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
-
+  const loginDB = async ({ email, password }) => {
+    try {
+      const credentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(credentials);
+      return credentials.user;
+    } catch (error) {
+      throw error;
+    }
+  };
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);

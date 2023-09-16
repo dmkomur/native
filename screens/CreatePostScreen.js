@@ -17,6 +17,34 @@ import SvgLocation from "../components/SvgLocation";
 import SvgTresh from "../components/SvgTresh";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { db } from "../config";
+
+const getDataFromFirestore = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "users"));
+    console.log(snapshot);
+    snapshot.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
+    return snapshot.map((doc) => ({ id: doc.id, data: doc.data() }));
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const writeDataToFirestore = async () => {
+  try {
+    const docRef = await addDoc(collection(db, "users"), {
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815,
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+    throw e;
+  }
+};
 
 export default function CreatePostScreen() {
   const [name, setName] = useState("");
@@ -64,7 +92,8 @@ export default function CreatePostScreen() {
   };
   const handleForm = () => {
     console.log({ name, location, photo, locationName });
-    navigation.navigate("Map");
+    // navigation.navigate("Map");
+    getDataFromFirestore();
   };
   return (
     <KeyboardAvoidingView

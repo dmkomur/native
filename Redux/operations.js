@@ -7,7 +7,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../config";
-
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../config";
 export const signin = createAsyncThunk(
   "signin",
   async ({ email, password }, thunkAPI) => {
@@ -49,21 +50,52 @@ export const signout = createAsyncThunk("signout", async (_, thunkAPI) => {
 
 export const updateuser = createAsyncThunk(
   "updateuser",
-  async (action, thunkAPI) => {
+  async ({ login }, thunkAPI) => {
     const user = auth.currentUser;
 
     if (user) {
       try {
         const result = await updateProfile(user, {
-          displayName: action.payload,
+          displayName: login,
         });
         console.log(result);
       } catch (error) {
-        throw error;
+        return thunkAPI.rejectWithValue(error.message);
       }
     }
   }
 );
+
+export const createpost = createAsyncThunk(
+  "createpost",
+  async (
+    { name, location, photo, locationName, likes, comments },
+    thunkAPI
+  ) => {
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        name,
+        location,
+        photo,
+        locationName,
+        likes,
+        comments,
+      });
+      console.log("Document written ", docRef);
+    } catch (e) {
+      console.log(e);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+// const writeDataToFirestore = async () => {
+//   try {
+//     const docRef = await addDoc(collection(db, "posts"), action.payload);
+//     console.log("Document written ", docRef);
+//   } catch (e) {
+//     return thunkAPI.rejectWithValue(error.message);
+//   }
+// };
 
 // export const currentUser = createAsyncThunk(
 //   "auth/current",

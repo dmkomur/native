@@ -19,6 +19,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../config";
+import { useDispatch, useSelector } from "react-redux";
+import { createpost } from "../Redux/operations";
 
 const getDataFromFirestore = async () => {
   try {
@@ -32,20 +34,6 @@ const getDataFromFirestore = async () => {
   }
 };
 
-const writeDataToFirestore = async () => {
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-    throw e;
-  }
-};
-
 export default function CreatePostScreen() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState(null);
@@ -55,6 +43,8 @@ export default function CreatePostScreen() {
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const navigation = useNavigation();
+  const uid = useSelector((state) => state.main.user.uid);
+  const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -91,9 +81,16 @@ export default function CreatePostScreen() {
     }
   };
   const handleForm = () => {
-    console.log({ name, location, photo, locationName });
-    // navigation.navigate("Map");
-    getDataFromFirestore();
+    dispatch(
+      createpost({
+        name,
+        location,
+        photo,
+        locationName,
+        likes: 0,
+        comments: [],
+      })
+    );
   };
   return (
     <KeyboardAvoidingView
@@ -121,7 +118,9 @@ export default function CreatePostScreen() {
               </TouchableOpacity>
             </Camera>
           </View>
-          <Text style={styles.textPhoto}>Завантажте фото</Text>
+          <Text style={styles.textPhoto}>
+            {photo ? "Фото додано" : "Обов'язково зробіть фото"}
+          </Text>
         </View>
         <View style={styles.inputBlock}>
           <TextInput

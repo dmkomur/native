@@ -19,6 +19,7 @@ import {
 import SvgPlus from "../components/SvgPlus";
 import { useNavigation } from "@react-navigation/native";
 
+import { useDispatch } from "react-redux";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -26,7 +27,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../config";
-
+import { signin } from "../Redux/operations";
 export default function RegistrationScreen() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
@@ -34,31 +35,20 @@ export default function RegistrationScreen() {
   const [input1Focused, setInput1Focused] = useState(false);
   const [input2Focused, setInput2Focused] = useState(false);
   const [input3Focused, setInput3Focused] = useState(false);
-  const [displayName, setdisplayName] = useState("");
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const handleForm = () => {
-    console.log({ displayName, email, password });
-    navigation.navigate("Home");
-  };
+  const dispatch = useDispatch();
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
-  const registerDB = async ({ email, password, displayName }) => {
-    try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-        displayName
-      );
-      console.log(result);
-    } catch (error) {
-      throw error;
-    }
+
+  const handleForm = () => {
+    registerDB({ login, email, password });
   };
+
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -109,8 +99,8 @@ export default function RegistrationScreen() {
                 style={[styles.input, input1Focused && styles.inputFocused]}
                 placeholder="Логін"
                 placeholderTextColor={"#BDBDBD"}
-                value={displayName}
-                onChangeText={setdisplayName}
+                value={login}
+                onChangeText={setLogin}
               />
               <TextInput
                 onFocus={() => setInput2Focused(true)}
@@ -138,12 +128,15 @@ export default function RegistrationScreen() {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              onPress={() => registerDB({ displayName, email, password })}
+              onPress={() => handleForm()}
               style={styles.button}
             >
               <Text style={styles.buttonText}>Зареєструватися</Text>
             </TouchableOpacity>
-            <Text style={styles.linkText} onPress={() => handleForm}>
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate("Login")}
+            >
               Вже є акаунт? Увійти
             </Text>
           </Animated.View>

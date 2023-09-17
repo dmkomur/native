@@ -22,6 +22,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../config";
+import { useSelector } from "react-redux";
 
 export default function LoginScreen() {
   const [shift, setShift] = useState(false);
@@ -32,7 +33,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-
+  const allState = useSelector((state) => state.main);
+  console.log(allState);
   const handleForm = () => {
     loginDB({ email, password });
   };
@@ -47,7 +49,7 @@ export default function LoginScreen() {
         email,
         password
       );
-      console.log(credentials);
+      console.log(credentials.user);
       return credentials.user;
     } catch (error) {
       throw error;
@@ -124,7 +126,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
             <Text
               style={styles.linkText}
-              onPress={() => navigation.navigate("Registration")}
+              onPress={() => navigation.navigate("Home", { screen: "Posts" })}
             >
               Немає акаунту?{" "}
               <Text style={styles.linkTextLine}>Зареєструватися</Text>

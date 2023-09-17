@@ -6,7 +6,7 @@ import PostNavigation from "../components/PostsNavigation";
 import CommentsScreen from "./CommentsScreen";
 import MapScreen from "./MapScreen";
 import SvgArrow from "../components/SvgArrow";
-
+import CreatePostScreen from "./CreatePostScreen";
 const HomeStack = createStackNavigator();
 
 export default function Home() {
@@ -18,6 +18,28 @@ export default function Home() {
         options={{
           headerShown: false,
         }}
+      />
+      <HomeStack.Screen
+        name="Create"
+        component={CreatePostScreen}
+        options={({ navigation }) => ({
+          headerTitle: "Створити пост",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Roboro-Medium",
+            color: "#212121",
+            textAlign: "center",
+            fontSize: 17,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 16 }}
+            >
+              <SvgArrow />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <HomeStack.Screen
         name="Comments"

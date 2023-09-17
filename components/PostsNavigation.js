@@ -22,9 +22,11 @@ import SvgUser from "./SvgUser";
 
 const Tabs = createBottomTabNavigator();
 
-export default function PostNavigation() {
-  const navigation = useNavigation();
-
+export default function PostNavigation({ navigation }) {
+  const onPressButton = (e) => {
+    e.preventDefault();
+    navigation.navigate("Create");
+  };
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -89,27 +91,10 @@ export default function PostNavigation() {
       />
       <Tabs.Screen
         name="Create"
-        component={CreatePostScreen}
-        options={{
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <SvgArrow style={{ marginLeft: 16 }} />
-            </TouchableOpacity>
-          ),
-          headerTitle: () => (
-            <Text
-              style={{
-                fontSize: 22,
-                fontFamily: "Roboro-Medium",
-                color: "#212121",
-                textAlign: "center",
-              }}
-            >
-              Створити публікацію
-            </Text>
-          ),
-          headerTitleAlign: "center",
-        }}
+        component={View}
+        listeners={() => ({
+          tabPress: (event) => onPressButton(event),
+        })}
       />
       <Tabs.Screen
         name="Profile"

@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../config";
 
@@ -23,16 +24,13 @@ export const signin = createAsyncThunk(
   }
 );
 
-// export const signOut = createAsyncThunk(
-//   "auth/signout",
-//   async (credentials, thunkAPI) => {
-//     try {
-
-//     } catch (error) {
-
-//     }
-//   }
-// );
+export const signout = createAsyncThunk("signout", async (_, thunkAPI) => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
 
 // export const changeTheme = createAsyncThunk(
 //   "auth/updateTheme",

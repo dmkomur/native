@@ -15,14 +15,8 @@ import {
   Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "../config";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signin } from "../Redux/operations";
 
 export default function LoginScreen() {
   const [shift, setShift] = useState(false);
@@ -33,28 +27,25 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const allState = useSelector((state) => state.main);
-  console.log(allState);
+  const dispatch = useDispatch();
+
+  const allStore = useSelector((state) => state.main);
+  useEffect(() => {
+    console.log(allStore);
+  }, [allStore]);
+
   const handleForm = () => {
-    loginDB({ email, password });
+    dispatch(signin({ email, password })).then((r) => {
+      console.log(r);
+      navigation.navigate("Home");
+    });
   };
+
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
-  const loginDB = async ({ email, password }) => {
-    try {
-      const credentials = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log(credentials.user);
-      return credentials.user;
-    } catch (error) {
-      throw error;
-    }
-  };
+
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -67,6 +58,7 @@ export default function LoginScreen() {
       listenerHide.remove();
     };
   }, []);
+
   useEffect(() => {
     Animated.timing(position, {
       toValue: shift ? 130 : 50,
@@ -126,7 +118,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
             <Text
               style={styles.linkText}
-              onPress={() => navigation.navigate("Home", { screen: "Posts" })}
+              onPress={() => navigation.navigate("Home")}
             >
               Немає акаунту?{" "}
               <Text style={styles.linkTextLine}>Зареєструватися</Text>
@@ -212,3 +204,5 @@ const styles = StyleSheet.create({
   },
   linkTextLine: { textDecorationLine: "underline" },
 });
+
+// onPress={() => navigation.navigate("Home", { screen: "Posts" })}

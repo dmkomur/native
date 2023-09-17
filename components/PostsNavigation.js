@@ -4,16 +4,9 @@ import CreatePostScreen from "../screens/CreatePostScreen";
 import PostsScreen from "../screens/PostsScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import { signout } from "../Redux/operations";
 import SvgLogout from "./SvgLogout";
 import SvgArrow from "./SvgArrow";
 import SvgAdd from "./SvgAdd";
@@ -26,6 +19,11 @@ export default function PostNavigation({ navigation }) {
   const onPressButton = (e) => {
     e.preventDefault();
     navigation.navigate("Create");
+  };
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(signout()).then(() => navigation.navigate("Login"));
   };
   return (
     <Tabs.Navigator
@@ -69,7 +67,7 @@ export default function PostNavigation({ navigation }) {
         options={{
           headerRight: () => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleLogout}>
                 <SvgLogout style={{ marginRight: 16 }} />
               </TouchableOpacity>
             );

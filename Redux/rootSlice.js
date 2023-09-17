@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   signin,
   signup,
-  signOut,
+  signout,
   changeTheme,
   currentUser,
   updateUserProfile,
@@ -34,8 +34,16 @@ const rootSlice = createSlice({
       .addCase(signin.pending, handlePending)
       .addCase(signin.rejected, handleRejected)
       .addCase(signin.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.uid;
         state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(signout.pending, handlePending)
+      .addCase(signout.rejected, handleRejected)
+      .addCase(signout.fulfilled, (state, action) => {
+        state.user = null;
+        state.isLoading = false;
+        state.error = null;
       });
   },
 });

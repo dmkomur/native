@@ -28,12 +28,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const allStore = useSelector((state) => state.main);
-  useEffect(() => {
-    console.log(allStore);
-  }, [allStore]);
-
+  const isLogined = useSelector((state) => state.main.user);
   const handleForm = () => {
     dispatch(signin({ email, password })).then((r) => {
       console.log(r);
@@ -45,7 +40,11 @@ export default function LoginScreen() {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
-
+  useEffect(() => {
+    if (isLogined) {
+      navigation.navigate("Home");
+    }
+  }, [isLogined]);
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -118,7 +117,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
             <Text
               style={styles.linkText}
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("Registration")}
             >
               Немає акаунту?{" "}
               <Text style={styles.linkTextLine}>Зареєструватися</Text>

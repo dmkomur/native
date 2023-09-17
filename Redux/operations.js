@@ -23,6 +23,21 @@ export const signin = createAsyncThunk(
     }
   }
 );
+export const signup = createAsyncThunk(
+  "signup",
+  async ({ email, password }, thunkAPI) => {
+    try {
+      const credentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      return credentials.user;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 export const signout = createAsyncThunk("signout", async (_, thunkAPI) => {
   try {
@@ -32,16 +47,23 @@ export const signout = createAsyncThunk("signout", async (_, thunkAPI) => {
   }
 });
 
-// export const changeTheme = createAsyncThunk(
-//   "auth/updateTheme",
-//   async (selectedOption, thunkAPI) => {
-//     try {
+export const updateuser = createAsyncThunk(
+  "updateuser",
+  async (action, thunkAPI) => {
+    const user = auth.currentUser;
 
-//     } catch (error) {
-
-//     }
-//   }
-// );
+    if (user) {
+      try {
+        const result = await updateProfile(user, {
+          displayName: action.payload,
+        });
+        console.log(result);
+      } catch (error) {
+        throw error;
+      }
+    }
+  }
+);
 
 // export const currentUser = createAsyncThunk(
 //   "auth/current",

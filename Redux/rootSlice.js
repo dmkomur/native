@@ -1,12 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  signin,
-  signup,
-  signout,
-  changeTheme,
-  currentUser,
-  updateUserProfile,
-} from "./operations";
+import { signin, signup, signout, updateuser } from "./operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -34,7 +27,14 @@ const rootSlice = createSlice({
       .addCase(signin.pending, handlePending)
       .addCase(signin.rejected, handleRejected)
       .addCase(signin.fulfilled, (state, action) => {
-        state.user = action.payload.uid;
+        state.user = action.payload;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(signup.pending, handlePending)
+      .addCase(signup.rejected, handleRejected)
+      .addCase(signup.fulfilled, (state, action) => {
+        state.user = action.payload;
         state.isLoading = false;
         state.error = null;
       })

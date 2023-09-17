@@ -15,19 +15,11 @@ import {
   Platform,
   Animated,
 } from "react-native";
-
 import SvgPlus from "../components/SvgPlus";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { signup, updateuser } from "../Redux/operations";
 
-import { useDispatch } from "react-redux";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  updateProfile,
-} from "firebase/auth";
-import { auth } from "../config";
-import { signin } from "../Redux/operations";
 export default function RegistrationScreen() {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
@@ -40,13 +32,21 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  // const allStore = useSelector((state) => state.main);
+  // useEffect(() => {
+  //   console.log(allStore);
+  // }, [allStore]);
+
   const togglePasswordVisibility = (event) => {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
 
   const handleForm = () => {
-    registerDB({ login, email, password });
+    dispatch(signup({ email, password })).then(() =>
+      navigation.navigate("Home")
+    );
   };
 
   useEffect(() => {

@@ -5,11 +5,15 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  FlatList,
 } from "react-native";
 import SvgLogout from "../components/SvgLogout";
 import PostCard from "../components/PostCard";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
+  const data = useSelector((state) => state.main);
+
   return (
     <View style={styles.container}>
       <Image
@@ -27,9 +31,15 @@ export default function ProfileScreen() {
         </View>
         <SvgLogout style={styles.svgLogout} />
         <Text style={styles.title}>ProfileScreen</Text>
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {data.posts.length > 0 && (
+          <View style={styles.listWrapper}>
+            <FlatList
+              data={data.posts}
+              renderItem={({ item }) => <PostCard info={item.data} />}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -61,6 +71,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
+  },
+  listWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   photoThumb: {
     position: "absolute",

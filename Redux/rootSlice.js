@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signin, signup, signout, updateuser, getposts } from "./operations";
+import {
+  signin,
+  signup,
+  signout,
+  updateuser,
+  getposts,
+  addcomment,
+  createpost,
+} from "./operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -30,6 +38,7 @@ const rootSlice = createSlice({
         state.user = action.payload;
         state.isLoading = false;
         state.error = null;
+        console.log("login");
       })
       .addCase(signup.pending, handlePending)
       .addCase(signup.rejected, handleRejected)
@@ -37,6 +46,7 @@ const rootSlice = createSlice({
         state.user = action.payload;
         state.isLoading = false;
         state.error = null;
+        console.log("registr");
       })
       .addCase(signout.pending, handlePending)
       .addCase(signout.rejected, handleRejected)
@@ -44,6 +54,7 @@ const rootSlice = createSlice({
         state.user = null;
         state.isLoading = false;
         state.error = null;
+        console.log("logOUT");
       })
       .addCase(getposts.pending, handlePending)
       .addCase(getposts.rejected, handleRejected)
@@ -51,6 +62,21 @@ const rootSlice = createSlice({
         state.posts = action.payload;
         state.isLoading = false;
         state.error = null;
+        console.log("GetedPosts");
+      })
+      .addCase(addcomment.pending, handlePending)
+      .addCase(addcomment.rejected, handleRejected)
+      .addCase(addcomment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        console.log("comment added");
+      })
+      .addCase(createpost.pending, handlePending)
+      .addCase(createpost.rejected, handleRejected)
+      .addCase(createpost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        console.log("post created");
       });
   },
 });

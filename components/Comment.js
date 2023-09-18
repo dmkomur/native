@@ -1,16 +1,9 @@
 import React from "react";
 
 import { useNavigation } from "@react-navigation/native";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 
-export default function Comment({ odd }) {
+export default function Comment({ odd, info }) {
   return (
     <View
       style={[
@@ -19,7 +12,11 @@ export default function Comment({ odd }) {
       ]}
     >
       <View style={styles.photoThumb}>
-        <ImageBackground />
+        <ImageBackground
+          source={require("../assets/av.webp")}
+          style={{ flex: 1 }}
+          resizeMode="cover"
+        />{" "}
       </View>
       <View
         style={[
@@ -33,8 +30,7 @@ export default function Comment({ odd }) {
             odd ? { alignSelf: "flex-end" } : { alignSelf: "flex-start" },
           ]}
         >
-          Це дуже гарно а можука цуацуа цуацуацуа цуацуацуацу цуацацуацуа
-          цуацауцуацу цуацуацуац цуацуацуацу цауцуацуа.... ЦЦЦКцукцукцкц
+          {info.message}
         </Text>
         <Text
           style={[
@@ -42,7 +38,7 @@ export default function Comment({ odd }) {
             odd ? { textAlign: "right" } : { textAlign: "left" },
           ]}
         >
-          субота 16,06,2014 16-22-04
+          {info.date}
         </Text>
       </View>
     </View>

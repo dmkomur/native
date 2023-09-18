@@ -11,15 +11,18 @@ export default function PostsScreen() {
   useEffect(() => {
     dispatch(getposts());
   }, []);
+  useEffect(() => {
+    console.log(data.posts);
+  }, [data]);
 
   return (
     <View style={styles.container}>
       <UserInfo user={data.user} />
-      {data.posts.length > 0 && (
+      {data?.posts?.length > 0 && (
         <View style={styles.listWrapper}>
           <FlatList
             data={data.posts}
-            renderItem={({ item }) => <PostCard info={item.data} />}
+            renderItem={({ item }) => <PostCard info={item} />}
             keyExtractor={(item) => item.id}
           />
         </View>
@@ -41,6 +44,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    gap: 32,
   },
 });

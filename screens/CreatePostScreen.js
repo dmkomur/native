@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../config";
 import { useDispatch, useSelector } from "react-redux";
-import { createpost } from "../Redux/operations";
+import { createpost, getposts } from "../Redux/operations";
 
 const getDataFromFirestore = async () => {
   try {
@@ -95,7 +95,9 @@ export default function CreatePostScreen() {
         comments: [],
         owner: uid,
       })
-    ).then(() => navigation.navigate("Posts"));
+    )
+      .then(() => navigation.navigate("Posts"))
+      .then(() => dispatch(getposts()));
   };
   const resetForm = () => {
     setName("");

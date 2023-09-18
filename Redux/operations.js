@@ -7,8 +7,15 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../config";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../config";
+import { useSelector } from "react-redux";
 
 export const signin = createAsyncThunk(
   "signin",
@@ -100,6 +107,23 @@ export const getposts = createAsyncThunk("getposts", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.message);
   }
 });
+
+export const addcomment = createAsyncThunk(
+  "addcomment",
+  async ({ docId, comment }, thunkAPI) => {
+    try {
+      const ref = doc(db, "posts", docId);
+
+      await updateDoc(ref, {
+        comments: [...comment],
+      });
+      console.log("document updated");
+    } catch (error) {
+      console.log(error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 // const writeDataToFirestore = async () => {
 //   try {

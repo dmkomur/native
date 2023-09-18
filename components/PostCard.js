@@ -13,6 +13,7 @@ import SvgBubble from "./SvgBubble";
 import SvgLocation from "./SvgLocation";
 
 export default function PostCard({ info }) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.photoThumb}>
@@ -22,16 +23,24 @@ export default function PostCard({ info }) {
           resizeMode="cover"
         />
       </View>
-      <Text style={styles.textName}>{info.name}</Text>
+      <Text style={styles.textName}>{info.data.name}</Text>
       <View style={styles.textWrapper}>
-        <View style={styles.commentsWrapper}>
+        <TouchableOpacity
+          style={styles.commentsWrapper}
+          onPress={() => navigation.navigate("Comments", { data: info })}
+        >
           <SvgBubble />
-          <Text style={styles.textComments}>{info.comments.length}</Text>
-        </View>
-        <View style={styles.commentsWrapper}>
+          <Text style={styles.textComments}>{info.data.comments.length}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.commentsWrapper}
+          onPress={() =>
+            navigation.navigate("Map", { lacation: info.data.location })
+          }
+        >
           <SvgLocation />
           <Text style={styles.textLocation}>{info.locationName}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
   textWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "baseline",
+    alignItems: "center",
   },
   textComments: {
     fontFamily: "Roboro-Regular",
@@ -75,5 +84,6 @@ const styles = StyleSheet.create({
   commentsWrapper: {
     flexDirection: "row",
     gap: 8,
+    alignItems: "center",
   },
 });

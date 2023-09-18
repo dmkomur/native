@@ -22,7 +22,7 @@ export default function UserInfo({ user }) {
       </View>
       <View style={styles.textWrapper}>
         <Text style={styles.textName}>Natali Romanova</Text>
-        <Text style={styles.textEmail}>{user.email}</Text>
+        <Text style={styles.textEmail}>{user?.email}</Text>
       </View>
     </View>
   );

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
+  ImageBackground,
   View,
   ScrollView,
   TextInput,
@@ -9,22 +10,56 @@ import {
 } from "react-native";
 import Comment from "../components/Comment";
 import SvgArrowTop from "../components/SvgArrowTop";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { addcomment, getposts } from "../Redux/operations";
 
 export default function CommentsScreen() {
+  const [text, setText] = useState("");
+  const dispatcher = useDispatch();
+  const navigation = useNavigation();
+  const {
+    params: { data },
+  } = useRoute();
+  console.log(data);
+
+  const handleForm = () => {
+    const newComment = { message: text, date: new Date() };
+    console.log(data.id);
+    dispatcher(
+      addcomment({
+        comment: [newComment, ...data.data.comments],
+        docId: data.id,
+      })
+    )
+      .then(() => dispatcher(getposts()))
+      .then(() => navigation.navigate("Home"));
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.photoThumb}></View>
-      <View style={styles.commentsList}>
-        <Comment />
-        <Comment odd />
+      <View style={styles.photoThumb}>
+        <ImageBackground
+          source={require("../assets/photo.jpg")}
+          style={{ flex: 1 }}
+          resizeMode="cover"
+        />
       </View>
+      {data?.data?.comments?.length > 0 && (
+        <ScrollView style={styles.commentsList}>
+          {data.data.comments.map((el, index) => (
+            <Comment key={index} odd={index % 2 === 0} info={el} />
+          ))}
+        </ScrollView>
+      )}
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
           placeholder="Коментувати..."
           placeholderTextColor={"#BDBDBD"}
+          value={text}
+          onChangeText={setText}
         />
-        <TouchableOpacity style={styles.svgWrapper}>
+        <TouchableOpacity style={styles.svgWrapper} onPress={handleForm}>
           <SvgArrowTop />
         </TouchableOpacity>
       </View>
@@ -47,6 +82,7 @@ const styles = StyleSheet.create({
     height: 240,
     backgroundColor: "green",
     borderRadius: 8,
+    overflow: "hidden",
   },
   input: {
     width: 343,

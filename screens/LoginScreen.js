@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../Redux/operations";
+import { getposts, signin } from "../Redux/operations";
 
 export default function LoginScreen() {
   const [shift, setShift] = useState(false);
@@ -29,6 +29,7 @@ export default function LoginScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const isLogined = useSelector((state) => state.main.user);
+
   const handleForm = () => {
     dispatch(signin({ email, password })).then((r) => {
       console.log(r);
@@ -40,11 +41,13 @@ export default function LoginScreen() {
     event.stopPropagation();
     setHidePassword(!hidePassword);
   };
+
   useEffect(() => {
     if (isLogined) {
       navigation.navigate("Home");
     }
   }, [isLogined]);
+
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -52,6 +55,7 @@ export default function LoginScreen() {
     const listenerHide = Keyboard.addListener("keyboardDidHide", () => {
       setShift(false);
     });
+
     return () => {
       listenerShow.remove();
       listenerHide.remove();

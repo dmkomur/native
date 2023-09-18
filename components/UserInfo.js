@@ -10,15 +10,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function UserInfo() {
+export default function UserInfo({ user }) {
   return (
     <View style={styles.container}>
       <View style={styles.photoThumb}>
-        <ImageBackground />
+        <ImageBackground
+          source={require("../assets/avatar.webp")}
+          style={{ flex: 1 }}
+          resizeMode="cover"
+        />
       </View>
       <View style={styles.textWrapper}>
         <Text style={styles.textName}>Natali Romanova</Text>
-        <Text style={styles.textEmail}>Natali@Roman.ova</Text>
+        <Text style={styles.textEmail}>{user.email}</Text>
       </View>
     </View>
   );
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: "green",
     marginRight: 8,
+    overflow: "hidden",
   },
   textWrapper: {},
   textEmail: {

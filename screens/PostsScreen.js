@@ -1,18 +1,29 @@
-import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View, SafeAreaView } from "react-native";
 import UserInfo from "../components/UserInfo";
 import PostCard from "../components/PostCard";
+import { useDispatch, useSelector } from "react-redux";
+import { getposts } from "../Redux/operations";
 
 export default function PostsScreen() {
+  const data = useSelector((state) => state.main);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getposts());
+  }, []);
+
   return (
     <View style={styles.container}>
-      <UserInfo />
-      <PostCard />
-      <PostCard />
-      <PostCard />
-      <PostCard />
-      <PostCard />
+      <UserInfo user={data.user} />
+      {data.posts.length > 0 && (
+        <View style={styles.listWrapper}>
+          <FlatList
+            data={data.posts}
+            renderItem={({ item }) => <PostCard info={item.data} />}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -24,6 +35,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: "#fff",
     alignItems: "center",
+    gap: 32,
+  },
+  listWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     gap: 32,
   },
 });

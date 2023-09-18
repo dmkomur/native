@@ -18,7 +18,13 @@ export default function ProfileScreen() {
         resizeMode="cover"
       />
       <View style={styles.postsContainer}>
-        <View style={styles.photoThumb}></View>
+        <View style={styles.photoThumb}>
+          <ImageBackground
+            source={require("../assets/avatar.webp")}
+            style={{ flex: 1 }}
+            resizeMode="cover"
+          />
+        </View>
         <SvgLogout style={styles.svgLogout} />
         <Text style={styles.title}>ProfileScreen</Text>
         <PostCard />
@@ -63,6 +69,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     top: -60,
+    overflow: "hidden",
   },
   svgLogout: { alignSelf: "flex-end" },
 });

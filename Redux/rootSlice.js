@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signin, signup, signout, updateuser } from "./operations";
+import { signin, signup, signout, updateuser, getposts } from "./operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -42,6 +42,13 @@ const rootSlice = createSlice({
       .addCase(signout.rejected, handleRejected)
       .addCase(signout.fulfilled, (state, action) => {
         state.user = null;
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(getposts.pending, handlePending)
+      .addCase(getposts.rejected, handleRejected)
+      .addCase(getposts.fulfilled, (state, action) => {
+        state.posts = action.payload;
         state.isLoading = false;
         state.error = null;
       });

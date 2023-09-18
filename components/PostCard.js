@@ -12,23 +12,25 @@ import {
 import SvgBubble from "./SvgBubble";
 import SvgLocation from "./SvgLocation";
 
-export default function PostCard() {
+export default function PostCard({ info }) {
   return (
     <View style={styles.container}>
       <View style={styles.photoThumb}>
-        <ImageBackground />
+        <ImageBackground
+          source={require("../assets/photo.jpg")}
+          style={{ flex: 1 }}
+          resizeMode="cover"
+        />
       </View>
-      <Text style={styles.textName}>Pole</Text>
+      <Text style={styles.textName}>{info.name}</Text>
       <View style={styles.textWrapper}>
         <View style={styles.commentsWrapper}>
           <SvgBubble />
-          <Text style={styles.textComments}>200</Text>
+          <Text style={styles.textComments}>{info.comments.length}</Text>
         </View>
         <View style={styles.commentsWrapper}>
           <SvgLocation />
-          <Text style={styles.textLocation}>
-            Ivano-Frankivs'k Region, Ukraine
-          </Text>
+          <Text style={styles.textLocation}>{info.locationName}</Text>
         </View>
       </View>
     </View>
@@ -40,12 +42,14 @@ const styles = StyleSheet.create({
     height: "auto",
     width: 343,
     gap: 8,
+    marginBottom: 32,
   },
   photoThumb: {
     width: 343,
     height: 240,
     borderRadius: 8,
     backgroundColor: "green",
+    overflow: "hidden",
   },
   textWrapper: {
     flexDirection: "row",

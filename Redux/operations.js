@@ -7,8 +7,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../config";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../config";
+
 export const signin = createAsyncThunk(
   "signin",
   async ({ email, password }, thunkAPI) => {
@@ -73,7 +74,7 @@ export const createpost = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const docRef = await addDoc(collection(db, "posts"), {
+      await addDoc(collection(db, "posts"), {
         name,
         location,
         photo,
@@ -81,13 +82,25 @@ export const createpost = createAsyncThunk(
         likes,
         comments,
       });
-      console.log("Document written ", docRef);
     } catch (e) {
-      console.log(e);
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
+
+export const getposts = createAsyncThunk("getposts", async (_, thunkAPI) => {
+  try {
+    const snapshot = await getDocs(collection(db, "posts"));
+    const posts = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data(),
+    }));
+    return posts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
 // const writeDataToFirestore = async () => {
 //   try {
 //     const docRef = await addDoc(collection(db, "posts"), action.payload);

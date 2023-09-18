@@ -45,6 +45,7 @@ export default function CreatePostScreen() {
   const navigation = useNavigation();
   const uid = useSelector((state) => state.main.user.uid);
   const dispatch = useDispatch();
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -52,6 +53,7 @@ export default function CreatePostScreen() {
       setHasPermission(status === "granted");
     })();
   }, []);
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -67,6 +69,7 @@ export default function CreatePostScreen() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
   const handlePhoto = async () => {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync();
@@ -80,6 +83,7 @@ export default function CreatePostScreen() {
       await setLocation(coords);
     }
   };
+
   const handleForm = () => {
     dispatch(
       createpost({
@@ -89,8 +93,15 @@ export default function CreatePostScreen() {
         locationName,
         likes: 0,
         comments: [],
+        owner: uid,
       })
-    );
+    ).then(() => navigation.navigate("Posts"));
+  };
+  const resetForm = () => {
+    setName("");
+    setLocation(null);
+    setLocationName("");
+    setPhoto("");
   };
   return (
     <KeyboardAvoidingView
@@ -142,7 +153,7 @@ export default function CreatePostScreen() {
         <TouchableOpacity style={styles.button} onPress={handleForm}>
           <Text style={styles.buttonText}>Опубліковати</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.delWraper}>
+        <TouchableOpacity style={styles.delWraper} onPress={resetForm}>
           <SvgTresh />
         </TouchableOpacity>
       </View>

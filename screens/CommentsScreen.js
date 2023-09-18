@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import Comment from "../components/Comment";
 import SvgArrowTop from "../components/SvgArrowTop";
@@ -21,19 +22,15 @@ export default function CommentsScreen() {
   const {
     params: { data },
   } = useRoute();
-  console.log(data);
 
   const handleForm = () => {
     const newComment = { message: text, date: new Date() };
-    console.log(data.id);
     dispatcher(
       addcomment({
         comment: [newComment, ...data.data.comments],
         docId: data.id,
       })
-    )
-      .then(() => dispatcher(getposts()))
-      .then(() => navigation.navigate("Home"));
+    ).then(() => navigation.navigate("Home"));
   };
   return (
     <View style={styles.container}>
@@ -44,13 +41,17 @@ export default function CommentsScreen() {
           resizeMode="cover"
         />
       </View>
-      {data?.data?.comments?.length > 0 && (
-        <ScrollView style={styles.commentsList}>
-          {data.data.comments.map((el, index) => (
-            <Comment key={index} odd={index % 2 === 0} info={el} />
-          ))}
-        </ScrollView>
-      )}
+
+      <View style={styles.commentsList}>
+        <FlatList
+          data={data.data.comments}
+          renderItem={({ item, index }) => (
+            <Comment odd={index % 2 === 0} data={item} />
+          )}
+          keyExtractor={(item, index) => item.date.toString()}
+        />
+      </View>
+
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
@@ -108,6 +109,5 @@ const styles = StyleSheet.create({
   },
   commentsList: {
     flex: 1,
-    gap: 24,
   },
 });

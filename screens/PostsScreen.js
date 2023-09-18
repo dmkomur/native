@@ -11,9 +11,6 @@ export default function PostsScreen() {
   useEffect(() => {
     dispatch(getposts());
   }, []);
-  useEffect(() => {
-    console.log(data.posts);
-  }, [data]);
 
   return (
     <View style={styles.container}>

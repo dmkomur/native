@@ -3,7 +3,9 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 
-export default function Comment({ odd, info }) {
+export default function Comment({ odd, data }) {
+  const newDate = new Date(data.date);
+  const newDateString = newDate.toLocaleString();
   return (
     <View
       style={[
@@ -16,7 +18,7 @@ export default function Comment({ odd, info }) {
           source={require("../assets/av.webp")}
           style={{ flex: 1 }}
           resizeMode="cover"
-        />{" "}
+        />
       </View>
       <View
         style={[
@@ -30,7 +32,7 @@ export default function Comment({ odd, info }) {
             odd ? { alignSelf: "flex-end" } : { alignSelf: "flex-start" },
           ]}
         >
-          {info.message}
+          {data.message}
         </Text>
         <Text
           style={[
@@ -38,7 +40,7 @@ export default function Comment({ odd, info }) {
             odd ? { textAlign: "right" } : { textAlign: "left" },
           ]}
         >
-          {info.date}
+          {newDateString}
         </Text>
       </View>
     </View>
@@ -51,12 +53,14 @@ const styles = StyleSheet.create({
     width: 343,
     gap: 16,
     alignItems: "flex-start",
+    paddingBottom: 32,
   },
   photoThumb: {
     width: 28,
     height: 28,
     borderRadius: 100,
     backgroundColor: "green",
+    overflow: "hidden",
   },
 
   textComment: {

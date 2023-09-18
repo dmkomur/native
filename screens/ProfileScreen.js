@@ -6,14 +6,25 @@ import {
   ImageBackground,
   Dimensions,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import SvgLogout from "../components/SvgLogout";
 import PostCard from "../components/PostCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getposts, signout } from "../Redux/operations";
+import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
   const data = useSelector((state) => state.main);
-
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  useEffect(() => {
+    dispatch(getposts());
+  }, []);
+  const handleLogout = () => {
+    dispatch(signout()).then(() => navigation.navigate("Login"));
+  };
   return (
     <View style={styles.container}>
       <Image
@@ -29,13 +40,15 @@ export default function ProfileScreen() {
             resizeMode="cover"
           />
         </View>
-        <SvgLogout style={styles.svgLogout} />
+        <TouchableOpacity onPress={handleLogout} style={styles.svgLogout}>
+          <SvgLogout />
+        </TouchableOpacity>
         <Text style={styles.title}>ProfileScreen</Text>
-        {data.posts.length > 0 && (
+        {data?.posts?.length > 0 && (
           <View style={styles.listWrapper}>
             <FlatList
               data={data.posts}
-              renderItem={({ item }) => <PostCard info={item.data} />}
+              renderItem={({ item }) => <PostCard info={item} />}
               keyExtractor={(item) => item.id}
             />
           </View>

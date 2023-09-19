@@ -12,7 +12,7 @@ import {
 import Comment from "../components/Comment";
 import SvgArrowTop from "../components/SvgArrowTop";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addcomment, getposts } from "../Redux/operations";
 
 export default function CommentsScreen() {
@@ -23,6 +23,8 @@ export default function CommentsScreen() {
     params: { data },
   } = useRoute();
 
+  const allPosts = useSelector((state) => state.main.posts);
+  const currentPost = allPosts.find((post) => post.id === data.id);
   const handleForm = () => {
     const newComment = { message: text, date: new Date() };
     dispatcher(
@@ -30,7 +32,9 @@ export default function CommentsScreen() {
         comment: [newComment, ...data.data.comments],
         docId: data.id,
       })
-    ).then(() => navigation.navigate("Home"));
+    )
+      .then(() => dispatcher(getposts()))
+      .then(() => setText(""));
   };
   return (
     <View style={styles.container}>
@@ -42,15 +46,17 @@ export default function CommentsScreen() {
         />
       </View>
 
-      <View style={styles.commentsList}>
-        <FlatList
-          data={data.data.comments}
-          renderItem={({ item, index }) => (
-            <Comment odd={index % 2 === 0} data={item} />
-          )}
-          keyExtractor={(item, index) => item.date.toString()}
-        />
-      </View>
+      {currentPost && (
+        <View style={styles.commentsList}>
+          <FlatList
+            data={currentPost.data.comments}
+            renderItem={({ item, index }) => (
+              <Comment odd={index % 2 === 0} data={item} />
+            )}
+            keyExtractor={(item, index) => item.date.toString()}
+          />
+        </View>
+      )}
 
       <View style={styles.inputWrapper}>
         <TextInput

@@ -18,7 +18,7 @@ import { addcomment, getposts } from "../Redux/operations";
 export default function CommentsScreen() {
   const [text, setText] = useState("");
   const dispatcher = useDispatch();
-  const navigation = useNavigation();
+
   const {
     params: { data },
   } = useRoute();

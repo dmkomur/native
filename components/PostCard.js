@@ -18,7 +18,7 @@ export default function PostCard({ info }) {
     <View style={styles.container}>
       <View style={styles.photoThumb}>
         <ImageBackground
-          source={require("../assets/photo.jpg")}
+          source={{ uri: info.data.photo }}
           style={{ flex: 1 }}
           resizeMode="cover"
         />
@@ -35,11 +35,11 @@ export default function PostCard({ info }) {
         <TouchableOpacity
           style={styles.commentsWrapper}
           onPress={() =>
-            navigation.navigate("Map", { lacation: info.data.location })
+            navigation.navigate("Map", { place: info.data.location })
           }
         >
           <SvgLocation />
-          <Text style={styles.textLocation}>{info.locationName}</Text>
+          <Text style={styles.textLocation}>{info.data.locationName}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -57,13 +57,14 @@ const styles = StyleSheet.create({
     width: 343,
     height: 240,
     borderRadius: 8,
-    backgroundColor: "green",
+    backgroundColor: "grey",
     overflow: "hidden",
   },
   textWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    width: 343,
   },
   textComments: {
     fontFamily: "Roboro-Regular",

@@ -64,7 +64,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     Animated.timing(position, {
-      toValue: shift ? 130 : 50,
+      toValue: shift ? 90 : 50,
       duration: 300,
       useNativeDriver: false,
     }).start();

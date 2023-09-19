@@ -39,6 +39,12 @@ export default function CreatePostScreen() {
       const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
       setHasPermission(status === "granted");
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      };
+      await setLocation(coords);
     })();
   }, []);
 
@@ -80,12 +86,6 @@ export default function CreatePostScreen() {
   };
 
   const handleForm = async () => {
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    const coords = {
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
-    };
-    await setLocation(coords);
     await dispatch(
       createpost({
         name,

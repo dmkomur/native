@@ -6,10 +6,10 @@ import { PROVIDER_GOOGLE } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function MapScreen() {
-  const [place, setPlace] = useState(null);
   const {
-    params: { location },
+    params: { place },
   } = useRoute();
+  console.log(place);
 
   useEffect(() => {
     (async () => {
@@ -38,9 +38,7 @@ export default function MapScreen() {
         }}
         showsUserLocation={true}
       >
-        {location && (
-          <Marker title="Photo was taken here" coordinate={location} />
-        )}
+        {place && <Marker title="Photo was taken here" coordinate={place} />}
       </MapView>
     </View>
   );

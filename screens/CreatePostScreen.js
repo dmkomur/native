@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
@@ -17,22 +17,10 @@ import SvgLocation from "../components/SvgLocation";
 import SvgTresh from "../components/SvgTresh";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { db } from "../config";
 import { useDispatch, useSelector } from "react-redux";
 import { createpost, getposts } from "../Redux/operations";
-
-const getDataFromFirestore = async () => {
-  try {
-    const snapshot = await getDocs(collection(db, "users"));
-    console.log(snapshot);
-    snapshot.forEach((doc) => console.log(`${doc.id} =>`, doc.data()));
-    return snapshot.map((doc) => ({ id: doc.id, data: doc.data() }));
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+import { db, storage } from "../config";
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 
 export default function CreatePostScreen() {
   const [name, setName] = useState("");
@@ -70,22 +58,35 @@ export default function CreatePostScreen() {
     return <Text>No access to camera</Text>;
   }
 
-  const handlePhoto = async () => {
-    if (cameraRef) {
-      const { uri } = await cameraRef.takePictureAsync();
-      const photo = await MediaLibrary.createAssetAsync(uri);
-      await setPhoto(photo.uri);
-      let location = await Location.getCurrentPositionAsync({});
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      await setLocation(coords);
+  const uploadImg = async (img) => {
+    try {
+      const response = await fetch(img);
+      const file = await response.blob();
+      await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
+      const photoUrl = await getDownloadURL(
+        ref(storage, `photos/${file._data.blobId}`)
+      );
+      await setPhoto(photoUrl);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleForm = () => {
-    dispatch(
+  const handlePhoto = async () => {
+    if (cameraRef) {
+      const { uri } = await cameraRef.takePictureAsync();
+      await uploadImg(uri);
+    }
+  };
+
+  const handleForm = async () => {
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    };
+    await setLocation(coords);
+    await dispatch(
       createpost({
         name,
         location,
@@ -131,7 +132,7 @@ export default function CreatePostScreen() {
               </TouchableOpacity>
             </Camera>
           </View>
-          <Text style={styles.textPhoto}>
+          <Text style={[styles.textPhoto, photo ? { color: "#FF6C00" } : {}]}>
             {photo ? "Фото додано" : "Обов'язково зробіть фото"}
           </Text>
         </View>

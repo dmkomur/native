@@ -40,7 +40,7 @@ export default function CommentsScreen() {
     <View style={styles.container}>
       <View style={styles.photoThumb}>
         <ImageBackground
-          source={require("../assets/photo.jpg")}
+          source={{ uri: data.data.photo }}
           style={{ flex: 1 }}
           resizeMode="cover"
         />

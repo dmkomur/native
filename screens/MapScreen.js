@@ -9,7 +9,6 @@ export default function MapScreen() {
   const {
     params: { place },
   } = useRoute();
-  console.log(place);
 
   useEffect(() => {
     (async () => {
@@ -17,12 +16,6 @@ export default function MapScreen() {
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
-
-      const coords = {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      };
-      setPlace(coords);
     })();
   }, []);
 

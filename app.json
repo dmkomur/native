@@ -21,11 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dmac.superapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "android.config.googleMaps.apiKey": "AIzaSyD_bUyjo9FbQmgMCukHFDO4quRxM4GeRKg"
+    "android.config.googleMaps.apiKey": "AIzaSyD_bUyjo9FbQmgMCukHFDO4quRxM4GeRKg",
+    "extra": {
+      "eas": {
+        "projectId": "4573aecf-ae0c-43c3-8f5a-6fcc8b1ddc7c"
+      }
+    }
   }
 }
